@@ -2,69 +2,13 @@
 
 import sys
 import datetime
-
-
-class Player:
-
-    def __init__(self, name: str, level: int = 0) -> None:
-        self.name: str = name
-        self.level: int = level
-
-
-class TypeEvents:
-
-    events_type: list[str] = ["killed monster",
-                               "found treasure",
-                               "leveled up,"]
-
-    def __init__(self, event_num: int = 0) -> None:
-        if event_num >= len(TypeEvents.events_type):
-            event_num = 0
-        self.event: str = TypeEvents.events_type[event_num]
-
-
-class Event:
-
-    def __init__(self, player: Player, event: TypeEvents) -> None:
-        self.player: Player = player
-        self.event: TypeEvents = event
-
-
-class GameEvents:
-    
-    events: list[Event] = []
-    total_events:int = 0
-    high_level:int = 0
-    treaser_event: int = 0
-    level_up_event:int = 0
-
-
-    @classmethod
-    def get_events(cls) -> list[Event]:
-        return (cls.events)
-
-    @classmethod
-    def set_events(cls, events: list[Event]) -> list[Event]:
-        cls.events = events
-        return (cls.events)
-
-    @classmethod
-    def add_event(cls, event: Event) -> Event:
-        cls.events.append() = event
-        cls.total_events += 1
-        if cls.high_level < event.player.level:
-            cls.high_level = event.player.level
-        if "treasure" in event.event.event:
-            cls.treaser_event += 1
-        if event.event.event == "leveled up":
-            cls.level_up_event += 1
-        return (cls.events[len(cls.events) - 1])
+import random
 
 
 def gen_event(nb_events: int = 1000):
     events_type: list[str] = ["killed monster",
                                "found treasure",
-                               "leveled up,"]
+                               "leveled up"]
     players_name: list[str] = ["alice",
                                "bob",
                                "tatiana",
@@ -74,8 +18,8 @@ def gen_event(nb_events: int = 1000):
     player: str = ""
     event:str = ""
     while i <= nb_events:
-        while not is_prime_number(num):
-            num += 2
+        player = random.choice(players_name)
+        event = random.choice(events_type)
         yield (player, event)
         i += 1
 
@@ -125,7 +69,6 @@ def gen_prime_number(n:int = 1):
 def data_stream(argv: list[str]) -> None:
     players_level: dict[str, int] = {}
     player: str = ""
-    level: int = 0
     event: str = ""
     nb_events: int
     total_events:int = 0
@@ -145,24 +88,23 @@ def data_stream(argv: list[str]) -> None:
     print("")
     start_time:datetime.datetime = datetime.datetime.now()
     for player, event in gen_event(nb_events):
-    # for i in range(1, nb_events + 1):
         total_events += 1
-        if high_level < players_level[player]:
-            high_level = level
+        if player not in players_level.keys():
+            players_level[player] = random.randint(1, 12)
         if "treasure" in event:
             treaser_event += 1
-        if event == "leveled up":
+        if "level" in event:
             level_up_event += 1
             players_level[player] += 1
         if total_events <= 3:
-            print(f"Event {total_events}: Player {player} (level {level}) {event}")
+            print(f"Event {total_events}: Player {player} (level {players_level[player]}) {event}")
         if total_events ==4:
             print("...")            
     end_time:datetime.datetime = datetime.datetime.now()
     print("")
     print("=== Stream Analytics ===")
     print(f"Total events processed: {total_events}")
-    print(f"High-level players (10+): {high_level}")
+    print(f"High-level players (10+): {sum(1 for l in players_level.values() if l > 10)}")
     print(f"Treasure events: {treaser_event}")
     print(f"Level-up events: {level_up_event}")
     print("")
