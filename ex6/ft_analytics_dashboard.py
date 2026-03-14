@@ -41,32 +41,8 @@ def gen_fibo(n:int = 1):
         i += 1
 
 
-def is_prime_number(num:int) -> bool:
-    prime:bool = False
-    d: int = 3
-    if num >= 2:
-        prime = True
-        while d < num and prime:
-            if num % d == 0:
-                prime = False
-            d += 1
-    return (prime)
-
-
-def gen_prime_number(n:int = 1):
-    i:int = 2
-    num:int = 3
-    if n >= 1:
-        yield (2, n == 1)
-    while i <= n:
-        while not is_prime_number(num):
-            num += 2
-        yield (num, n == i)
-        num += 2
-        i += 1
-
-
 def analytics_dashboard(argv: list[str]) -> None:
+
     players_level: dict[str, int] = {}
     player: str = ""
     event: str = ""
@@ -82,7 +58,7 @@ def analytics_dashboard(argv: list[str]) -> None:
         nb_events = int(argv[1])
     except Exception:
         nb_events = 1000
-    print("=== Game Data Stream Processor ===\n")
+    print("=== Game Analytics Dashboard ===\n")
     print("")
     print(f"Processing {nb_events} game events...")
     print("")
@@ -101,27 +77,29 @@ def analytics_dashboard(argv: list[str]) -> None:
         if total_events ==4:
             print("...")            
     end_time:datetime.datetime = datetime.datetime.now()
+
+
     print("")
-    print("=== Stream Analytics ===")
-    print(f"Total events processed: {total_events}")
-    print(f"High-level players (10+): {sum(1 for l in players_level.values() if l > 10)}")
-    print(f"Treasure events: {treaser_event}")
-    print(f"Level-up events: {level_up_event}")
+    print("=== List Comprehension Examples ===")
+    print(f"High scorers (>2000): [’alice’, ’charlie’, ’diana’]")
+    print(f"Scores doubled: [4600, 3600, 4300, 4100]")
+    print(f"Active players: [’alice’, ’bob’, ’charlie’]")
     print("")
-    print("Memory usage: Constant (streaming)")
-    pt:datetime.timedelta = end_time - start_time
-    print(f"Processing time: {pt.seconds}.{pt.microseconds // 1000:03d} seconds ({pt.microseconds} microseconds)")
+    print("=== Dict Comprehension Examples ===")
+    print(f"Player scores: {’alice’: 2300, ’bob’: 1800, ’charlie’: 2150}")
+    print(f"Score categories: {’high’: 3, ’medium’: 2, ’low’: 1}")
+    print(f"Achievement counts: {’alice’: 5, ’bob’: 3, ’charlie’: 7}")
     print("")
-    print("=== Generator Demonstration ===")
-    n = 10
-    print(f"Fibonacci sequence (first {n}):", end=" ")
-    for fibo, last in gen_fibo(n):
-        print(f"{fibo}{"" if last else ", "}", end="")
+    print("=== Set Comprehension Examples ===")
+    print(f"Unique players: {’alice’, ’bob’, ’charlie’, ’diana’}")
+    print(f"Unique achievements: {’first_kill’, ’level_10’, ’boss_slayer’}")
+    print(f"Active regions: {’north’, ’east’, ’central’}")
     print("")
-    n = 5
-    print(f"Prime numbers (first {n}):", end=" ")
-    for prime, last in gen_prime_number(n):
-        print(f"{prime}{"" if last else ", "}", end="")
+    print("=== Combined Analysis ===")
+    print(f"Total players: 4")
+    print(f"Total unique achievements: 12")
+    print(f"Average score: 2062.5")
+    print(f"Top performer: alice (2300 points, 5 achievements)")
     print("")
 
 
