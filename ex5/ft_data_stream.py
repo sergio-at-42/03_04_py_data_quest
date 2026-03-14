@@ -72,7 +72,6 @@ def data_stream(argv: list[str]) -> None:
     event: str = ""
     nb_events: int
     total_events:int = 0
-    high_level:int = 0
     treaser_event: int = 0
     level_up_event:int = 0
     start_time:datetime
