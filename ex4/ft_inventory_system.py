@@ -4,76 +4,61 @@ import sys
 
 
 def disp_current_inventory(inventory: dict[str, int]) -> None:
-    # item_max: str = ""
-    # item_min: str = ""
-    # for item, quantity in inventory.items():
-    #     if item_min == "" or inventory[item_min] > quantity:
-    #         item_min = item
-    #     if item_max == "" or inventory[item_max] < quantity:
-    #         item_max = item
- 
-    for item, quantity in inventory.items():
-        print(f"{item}: {quantity} units", end=" ")
-        print(f"({round(quantity/sum(inventory.values())*100, 1)}%)")
+    total_quantities = sum(inventory.values())
+    if total_quantities == 0:
+        total_quantities = 1
+    if inventory == {}:
+        print("Inventory is empty.")
+    else:
+        for item, quantity in inventory.items():
+            print(f"{item}: {quantity} units", end=" ")
+            print(f"({round((quantity/total_quantities)*100, 1)}%)")
 
 
 def disp_inventory_statistics(inventory: dict[str, int]) -> None:
-    item_max: str = ""
-    item_min: str = ""
-    for item, quantity in inventory.items():
-        if item_min == "" or inventory[item_min] > quantity:
-            item_min = item
-        if item_max == "" or inventory[item_max] < quantity:
-            item_max = item
-    print(f"Most abundant: {item_max} ({inventory[item_max]} units)")
-    print(f"Least abundant: {item_min} ({inventory[item_min]} units)")
+    if inventory == {}:
+        print("Inventory is empty.")
+    else:
+        max_item, max_qty = max(inventory.items(), key=lambda item: item[1])
+        min_item, min_qty = min(inventory.items(), key=lambda item: item[1])
+        print(f"Most abundant: {max_item} ({max_qty} units)")
+        print(f"Least abundant: {min_item} ({min_qty} units)")
 
 
 def disp_item_categories(inventory: dict[str, int]) -> None:
-    item_max: str = ""
-    item_min: str = ""
-    for item, quantity in inventory.items():
-        if item_min == "" or inventory[item_min] > quantity:
-            item_min = item
-        if item_max == "" or inventory[item_max] < quantity:
-            item_max = item
-    print(f"Moderate: {inventory}")
-    print(f"Scarce: {inventory}")
+    if inventory == {}:
+        print("Inventory is empty.")
+    else:
+        moderate_item = {i: q for i, q in inventory.items() if q > 3}
+        scarce_item = {i: q for i, q in inventory.items() if q <= 3}
+        print(f"Moderate: {moderate_item}")
+        print(f"Scarce: {scarce_item}")
 
 
 def disp_management_suggestions(inventory: dict[str, int]) -> None:
-    item_max: str = ""
-    item_min: str = ""
-    for item, quantity in inventory.items():
-        if item_min == "" or inventory[item_min] > quantity:
-            item_min = item
-        if item_max == "" or inventory[item_max] < quantity:
-            item_max = item
-    print(f"Restock needed: {inventory.keys()}")
+    if inventory == {}:
+        print("Inventory is empty.")
+    else:
+        print(f"Restock needed: {[i for i, q in inventory.items() if q < 3]}")
 
 
 def disp_dictionary_properties(inventory: dict[str, int]) -> None:
-    item_max: str = ""
-    item_min: str = ""
-    for item, quantity in inventory.items():
-        if item_min == "" or inventory[item_min] > quantity:
-            item_min = item
-        if item_max == "" or inventory[item_max] < quantity:
-            item_max = item
     print(f"Dictionary keys: {inventory.keys()}")
     print(f"Dictionary values: {inventory.values()}")
-    item:str = "sword"
-    print(f"Sample lookup - ’{item}’ in inventory: {True}")
+    item: str = "sword"
+    print(f"Sample lookup - ’{item}’ in inventory:", end=" ")
+    print(f"{bool(inventory.get(item))}")
 
 
 def load_inventory(argv: list[str]) -> dict[str, int]:
     inventory: dict[str, int] = {}
     name: str = ""
     quantity: int = 0
-    for i in range(1, argv.__len__()):
-        name = argv[i].split(":")[0]
-        quantity = int(argv[i].split(":")[1])
-        inventory[name] = quantity
+    if len(argv) > 1:
+        for i in range(1, argv.__len__()):
+            name = argv[i].split(":")[0]
+            quantity = int(argv[i].split(":")[1])
+            inventory[name] = quantity
     return (inventory)
 
 

@@ -7,16 +7,16 @@ import random
 
 def gen_event(nb_events: int = 1000):
     events_type: list[str] = ["killed monster",
-                               "found treasure",
-                               "leveled up"]
+                              "found treasure",
+                              "leveled up"]
     players_name: list[str] = ["alice",
                                "bob",
                                "tatiana",
                                "charlie",
                                "sergio"]
-    i:int = 1
+    i: int = 1
     player: str = ""
-    event:str = ""
+    event: str = ""
     while i <= nb_events:
         player = random.choice(players_name)
         event = random.choice(events_type)
@@ -24,11 +24,11 @@ def gen_event(nb_events: int = 1000):
         i += 1
 
 
-def gen_fibo(n:int = 1):
-    i:int = 3
-    a:int = 0
-    b:int = 1
-    c:int = 0
+def gen_fibo(n: int = 1):
+    i: int = 3
+    a: int = 0
+    b: int = 1
+    c: int = 0
     if n >= 1:
         yield (a, n == 1)
     if n >= 2:
@@ -41,8 +41,8 @@ def gen_fibo(n:int = 1):
         i += 1
 
 
-def is_prime_number(num:int) -> bool:
-    prime:bool = False
+def is_prime_number(num: int) -> bool:
+    prime: bool = False
     d: int = 3
     if num >= 2:
         prime = True
@@ -53,9 +53,9 @@ def is_prime_number(num:int) -> bool:
     return (prime)
 
 
-def gen_prime_number(n:int = 1):
-    i:int = 2
-    num:int = 3
+def gen_prime_number(n: int = 1):
+    i: int = 2
+    num: int = 3
     if n >= 1:
         yield (2, n == 1)
     while i <= n:
@@ -71,12 +71,12 @@ def data_stream(argv: list[str]) -> None:
     player: str = ""
     event: str = ""
     nb_events: int
-    total_events:int = 0
+    total_events: int = 0
     treaser_event: int = 0
-    level_up_event:int = 0
-    start_time:datetime
-    end_time:datetime
-    n:int = 0
+    level_up_event: int = 0
+    start_time: datetime.datetime
+    end_time: datetime.datetime
+    n: int = 0
     try:
         nb_events = int(argv[1])
     except Exception:
@@ -85,7 +85,7 @@ def data_stream(argv: list[str]) -> None:
     print("")
     print(f"Processing {nb_events} game events...")
     print("")
-    start_time:datetime.datetime = datetime.datetime.now()
+    start_time = datetime.datetime.now()
     for player, event in gen_event(nb_events):
         total_events += 1
         if player not in players_level.keys():
@@ -96,20 +96,24 @@ def data_stream(argv: list[str]) -> None:
             level_up_event += 1
             players_level[player] += 1
         if total_events <= 3:
-            print(f"Event {total_events}: Player {player} (level {players_level[player]}) {event}")
-        if total_events ==4:
-            print("...")            
-    end_time:datetime.datetime = datetime.datetime.now()
+            print(f"Event {total_events}:", end=" ")
+            print(f"Player {player} (level {players_level[player]}) {event}")
+        if total_events == 4:
+            print("...")
+    end_time = datetime.datetime.now()
     print("")
     print("=== Stream Analytics ===")
     print(f"Total events processed: {total_events}")
-    print(f"High-level players (10+): {sum(1 for l in players_level.values() if l > 10)}")
+    print("High-level players (10+):", end=" ")
+    print(f"{sum(1 for level in players_level.values() if level > 10)}")
     print(f"Treasure events: {treaser_event}")
     print(f"Level-up events: {level_up_event}")
     print("")
     print("Memory usage: Constant (streaming)")
-    pt:datetime.timedelta = end_time - start_time
-    print(f"Processing time: {pt.seconds}.{pt.microseconds // 1000:03d} seconds ({pt.microseconds} microseconds)")
+    pt: datetime.timedelta = end_time - start_time
+    print("Processing time: ", end=" ")
+    print(f"{pt.seconds}.{pt.microseconds // 1000:03d} seconds", end=" ")
+    print(f"({pt.microseconds} microseconds)")
     print("")
     print("=== Generator Demonstration ===")
     n = 10
