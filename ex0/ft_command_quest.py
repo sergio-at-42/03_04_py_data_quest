@@ -5,9 +5,9 @@ import sys
 
 def command_quest(argv: list[str]) -> None:
     print("=== Command Quest ===")
+    print(f"Program name: {argv[0].rpartition("/")[2]}")
     if argv.__len__() == 1:
         print("No arguments provided!")
-    print(f"Program name: {argv[0]}")
     if argv.__len__() > 1:
         print(f"Arguments received: {argv.__len__() - 1}")
         for i in range(1, argv.__len__()):

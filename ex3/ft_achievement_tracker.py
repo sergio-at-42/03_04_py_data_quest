@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
 
+import random
+
+
 def disp_players_achievements(players: dict[str, set[str]]) -> None:
     for player, achievements in players.items():
         print(f"Player {player} achievements: {achievements}")
@@ -54,18 +57,45 @@ def p1_diff_p2(p1: str, p2: str, players: dict[str, set[str]]) -> set[str]:
     return (p1_diff_p2)
 
 
-def load_achievements() -> dict[str, set[str]]:
-    players_achievements: dict[str, set[str]] = {
-        "Alice": {"first_kill", "level_10", "treasure_hunter", "speed_demon"},
-        "Bob": {"first_kill", "level_10", "boss_slayer", "collector"},
-        "Charlie": {"level_10", "treasure_hunter", "boss_slayer",
-                    "speed_demon", "perfectionist"}}
+def gen_player_achievements() -> dict[str, set[str]]:
+    achievements: set[str] = {
+        "Speed Demon",
+        "Level 10",
+        "Perfectionist",
+        "First Kill",
+        "Crafting Genius",
+        "Strategist",
+        "World Savior",
+        "Speed Runner",
+        "Survivor",
+        "Master Explorer",
+        "Treasure Hunter",
+        "Unstoppable",
+        "First Steps",
+        "Collector Supreme",
+        "Untouchable",
+        "Sharp Mind",
+        "Boss Slayer"
+    }
+    players: list[str] = [
+        "Alice",
+        "Bob",
+        "Charlie",
+        "Dylan"
+    ]
+    players_achievements: dict[str, set[str]] = {}
+    achievements_done: set[str] = set()
+    for p in players:
+        nb_achievements = random.randint(10, 30)
+        for i in range(nb_achievements):
+            achievements_done.add(random.choice(list(achievements)))
+        players_achievements[p] = achievements_done
     return (players_achievements)
 
 
 def achievement_tracker() -> None:
     print("=== Achievement Tracker System ===\n")
-    players: dict[str, set[str]] = load_achievements()
+    players: dict[str, set[str]] = gen_player_achievements()
     player1: str = ""
     player2: str = ""
     disp_players_achievements(players)
