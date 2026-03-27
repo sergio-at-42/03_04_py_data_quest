@@ -3,6 +3,10 @@
 import sys
 
 
+class RedundantItemError(Exception):
+    """Base class for Inventory-related errors."""
+
+
 def disp_current_inventory(inventory: dict[str, int]) -> None:
     total_quantities = sum(inventory.values())
     if total_quantities == 0:
@@ -55,35 +59,62 @@ def load_inventory(argv: list[str]) -> dict[str, int]:
     name: str = ""
     quantity: int = 0
     if len(argv) > 1:
-        for i in range(1, argv.__len__()):
-            name = argv[i].split(":")[0]
-            quantity = int(argv[i].split(":")[1])
-            inventory[name] = quantity
+        for i in range(1, len(argv)):
+            try:
+                name = argv[i].split(":")[0]
+                if name in inventory:
+                    raise RedundantItemError()
+                quantity = int(argv[i].split(":")[1])
+                inventory[name] = quantity
+            except RedundantItemError:
+                print(f"Redundant item ’{name}’ - discarding")
+            except IndexError:
+                print(f"Error - invalid parameter ’{name}’")
+            except ValueError:
+                print(f"Quantity error for ’{name}':", end=" ")
+                print(f"invalid literal for int() with base 10:", end=" ")
+                print(f"’{argv[i].split(":")[1]}’")
     return (inventory)
 
 
 def inventory_system(argv: list[str]) -> None:
     print("=== Inventory System Analysis ===\n")
     inventory: dict[str, int] = load_inventory(argv)
-    total_items: int = sum(inventory.values())
-    print(f"Total items in inventory: {total_items}")
-    print(f"Unique item types: {len(inventory)}")
-    print("")
-    print("=== Current Inventory ===")
-    disp_current_inventory(inventory)
-    print("")
-    print("=== Inventory Statistics ===")
-    disp_inventory_statistics(inventory)
-    print("")
-    print("=== Item Categories ===")
-    disp_item_categories(inventory)
-    print("")
-    print("=== Management Suggestions ===")
-    disp_management_suggestions(inventory)
-    print("")
-    print("=== Dictionary Properties Demo ===")
-    disp_dictionary_properties(inventory)
-    print("")
+    if inventory == {}:
+        print("Inventory is empty.")
+    else:
+        print(f"Got inventory: {inventory}")
+        print(f"Item list: {list(inventory.keys())}")
+        total_items: int = sum(inventory.values())
+        print(f"Total quantity of the {len(inventory)} items: {total_items}")
+        for item, quantity in inventory.items():
+                print(f"Item {item}: represents", end=" ")
+                print(f"{round((quantity/total_items)*100, 1)}%")
+        max_item, max_qty = max(inventory.items(), key=lambda item: item[1])
+        print(f"Item most abundant: {max_item} with quantity {max_qty}")
+        min_item, min_qty = min(inventory.items(), key=lambda item: item[1])
+        print(f"Item least abundant: {min_item} with quantity {min_qty}")
+        inventory["magic_item"] = 1
+        print(f"Updated inventory: {inventory}")
+        print("")
+        # print("\n=== OLD EXERCICE ===\n")
+        # print(f"Unique item types: {len(inventory)}")
+        # print("")
+        # print("=== Current Inventory ===")
+        # disp_current_inventory(inventory)
+        # print("")
+        # print("=== Inventory Statistics ===")
+        # disp_inventory_statistics(inventory)
+        # print("")
+        # print("=== Item Categories ===")
+        # disp_item_categories(inventory)
+        # print("")
+        # print("=== Management Suggestions ===")
+        # disp_management_suggestions(inventory)
+        # print("")
+        # print("=== Dictionary Properties Demo ===")
+        # disp_dictionary_properties(inventory)
+        # print("")
 
 
 if __name__ == "__main__":
