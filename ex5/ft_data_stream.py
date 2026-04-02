@@ -5,25 +5,6 @@ import datetime
 import random
 
 
-def gen_event(nb_events: int = 1000):
-    events_type: list[str] = ["killed monster",
-                              "found treasure",
-                              "leveled up"]
-    players_name: list[str] = ["alice",
-                               "bob",
-                               "tatiana",
-                               "charlie",
-                               "sergio"]
-    i: int = 1
-    player: str = ""
-    event: str = ""
-    while i <= nb_events:
-        player = random.choice(players_name)
-        event = random.choice(events_type)
-        yield (player, event)
-        i += 1
-
-
 def gen_fibo(n: int = 1):
     i: int = 3
     a: int = 0
@@ -66,27 +47,63 @@ def gen_prime_number(n: int = 1):
         i += 1
 
 
+def gen_event():
+    events_type: list[str] = ["killed monster",
+                              "found treasure",
+                              "leveled up"]
+    players_name: list[str] = ["alice",
+                               "bob",
+                               "tatiana",
+                               "charlie",
+                               "sergio"]
+    player: str = ""
+    event: str = ""
+    while True:
+        player = random.choice(players_name)
+        event = random.choice(events_type)
+        yield (player, event)
+
+
+def consume_event(list_events: list[tuple[str, str]]):
+    while len(list_events):
+        yield (list_events.pop(random.randint(0, len(list_events) - 1)))
+
+
 def data_stream(argv: list[str]) -> None:
-    players_level: dict[str, int] = {}
     player: str = ""
     event: str = ""
     nb_events: int
+    list_events: list[tuple[str, str]] = []
+    try:
+        nb_events = int(argv[1])
+    except Exception:
+        nb_events = 1000
+    print("=== Game Data Stream Processor ===")
+    for i in range(nb_events):
+        player, event = next(gen_event())
+        print(f"Event {i}: Player {player} did action {event}")
+    for i in range(10):
+        list_events.append(next(gen_event()))
+    print("")
+    print(f"Built list of 10 events: {list_events}")
+    print("")
+    for i in range(10):
+        print(f"Got event from list: {next(consume_event(list_events))}")
+        print(f"Remains in list: {list_events}")
+    print("")
+    print("\n=== OLD EXERCICE ===\n")
+    players_level: dict[str, int] = {}
     total_events: int = 0
     treaser_event: int = 0
     level_up_event: int = 0
     start_time: datetime.datetime
     end_time: datetime.datetime
     n: int = 0
-    try:
-        nb_events = int(argv[1])
-    except Exception:
-        nb_events = 1000
-    print("=== Game Data Stream Processor ===\n")
-    print("")
     print(f"Processing {nb_events} game events...")
     print("")
     start_time = datetime.datetime.now()
-    for player, event in gen_event(nb_events):
+    for i in range(nb_events):
+        player, event = next(gen_event())
         total_events += 1
         if player not in players_level.keys():
             players_level[player] = random.randint(1, 12)
