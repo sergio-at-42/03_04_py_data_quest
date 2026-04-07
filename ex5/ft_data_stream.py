@@ -87,7 +87,7 @@ def data_stream(argv: list[str]) -> None:
     print("")
     print(f"Built list of 10 events: {list_events}")
     print("")
-    for i in range(10):
+    for i in range(len(list_events)):
         print(f"Got event from list: {next(consume_event(list_events))}")
         print(f"Remains in list: {list_events}")
     print("")
