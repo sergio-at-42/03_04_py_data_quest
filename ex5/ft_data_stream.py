@@ -3,9 +3,10 @@
 import sys
 import datetime
 import random
+from typing import Generator
 
 
-def gen_fibo(n: int = 1):
+def gen_fibo(n: int = 1) -> Generator[tuple[int, bool], int, None]:
     i: int = 3
     a: int = 0
     b: int = 1
@@ -34,7 +35,7 @@ def is_prime_number(num: int) -> bool:
     return (prime)
 
 
-def gen_prime_number(n: int = 1):
+def gen_prime_number(n: int = 1) -> Generator[tuple[int, bool], int, None]:
     i: int = 2
     num: int = 3
     if n >= 1:
@@ -47,7 +48,7 @@ def gen_prime_number(n: int = 1):
         i += 1
 
 
-def gen_event():
+def gen_event() -> Generator[tuple[str, str], None, None]:
     events_type: list[str] = ["killed monster",
                               "found treasure",
                               "leveled up"]
@@ -64,7 +65,9 @@ def gen_event():
         yield (player, event)
 
 
-def consume_event(list_events: list[tuple[str, str]]):
+def consume_event(
+        list_events: list[tuple[str, str]]
+        ) -> Generator[tuple[str, str], list[tuple[str, str]], None]:
     while len(list_events):
         yield (list_events.pop(random.randint(0, len(list_events) - 1)))
 

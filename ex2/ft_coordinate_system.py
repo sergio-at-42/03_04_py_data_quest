@@ -23,12 +23,18 @@ class ParseError(CoordError):
         super().__init__(f"Error parsing coordinates: {e.__str__()}")
 
 
-def dist_3d(p1: tuple[float, float, float], p2: tuple[float, float, float]) -> float:
+def dist_3d(
+        p1: tuple[float, float, float],
+        p2: tuple[float, float, float]
+        ) -> float:
     d = math.sqrt((p2[0]-p1[0])**2 + (p2[1]-p1[1])**2 + (p2[2]-p1[2])**2)
     return (d)
 
 
-def disp_dist(p1: tuple[float, float, float], p2: tuple[float, float, float]) -> None:
+def disp_dist(
+        p1: tuple[float, float, float],
+        p2: tuple[float, float, float]
+        ) -> None:
     print(f"Distance between {p1} and {p2}: {round(dist_3d(p1, p2), 2)}")
 
 
@@ -55,7 +61,10 @@ def parse_coordinate(argv: list[str]) -> tuple[float, float, float]:
     return (p)
 
 
-def create_3d_pos(o: tuple[float, float, float], p: tuple[float, float, float]) -> None:
+def create_3d_pos(
+        o: tuple[float, float, float],
+        p: tuple[float, float, float]
+        ) -> None:
     print(f"Position created: {p}")
     disp_dist(o, p)
     print("")
@@ -78,26 +87,27 @@ def parse_3d_position(o: tuple[float, float, float], argv: list[str]) -> None:
         print("")
 
 
-
 def get_player_pos() -> tuple[float, float, float]:
-    xyz: tuple = ()
-    coord: list[str] = []
+    coord_float: list[float] = []
+    coord_str: list[str] = []
     c: str = ""
-    while not xyz:
+    while not coord_float:
         try:
-            coord = (input("Enter new coordinates as floats in format ’x,y,z’:")).split(sep=",", maxsplit=2)
-            if len(coord) != 3:
+            coord_str = (input(
+                "Enter new coordinates as floats in format ’x,y,z’:"
+                )).split(sep=",", maxsplit=2)
+            if len(coord_str) != 3:
                 raise CoordError()
-            for c in coord:
-                xyz = xyz + (float(c),)
+            for c in coord_str:
+                coord_float.append(float(c))
         except CoordError:
             print("Invalid syntax")
-            xyz = ()
+            coord_float.clear()
         except ValueError:
             print(f"Error on parameter '{c}':", end=" ")
             print(f"could not convert string to float: '{c}'")
-            xyz = ()
-    return (xyz)
+            coord_float.clear()
+    return (coord_float[0], coord_float[1], coord_float[2])
 
 
 def coordinate_system(argv: list[str]) -> None:
@@ -110,7 +120,7 @@ def coordinate_system(argv: list[str]) -> None:
     print(f"Got a first tuple: {coord_start}")
     x, y, z = coord_start
     print(f"Coordinates: X={x}, Y={y}, Z={z}")
-    print(f"Distance to center: {round(dist_3d((0,0,0), coord_start), 4)}")
+    print(f"Distance to center: {round(dist_3d((0, 0, 0), coord_start), 4)}")
     print("")
     print("Get a second set of coordinates")
     coord_end = get_player_pos()

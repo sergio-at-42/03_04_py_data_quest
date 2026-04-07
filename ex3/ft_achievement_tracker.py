@@ -23,7 +23,10 @@ def common_to_all_players(players: dict[str, set[str]]) -> set[str]:
     return (inter)
 
 
-def unique_achievments_by_players(player: str, players: dict[str, set[str]]) -> set[str]:
+def unique_achievments_by_players(
+        player: str,
+        players: dict[str, set[str]]
+        ) -> set[str]:
     achievements: set[str] = players[player]
     for p, a in players.items():
         if p != player:
@@ -31,7 +34,11 @@ def unique_achievments_by_players(player: str, players: dict[str, set[str]]) -> 
     return (achievements)
 
 
-def missing_achievements_by_player(player: str, players: dict[str, set[str]], achievements: set[str]) -> set[str]:
+def missing_achievements(
+        player: str,
+        players: dict[str, set[str]],
+        achievements: set[str]
+        ) -> set[str]:
     return (achievements.difference(players[player]))
 
 
@@ -63,7 +70,7 @@ def p1_diff_p2(p1: str, p2: str, players: dict[str, set[str]]) -> set[str]:
     return (p1_diff_p2)
 
 
-def gen_player_achievements(players: list[str], achievements: set[str]) -> dict[str, set[str]]:
+def gen_ach(players: list[str], achievements: set[str]) -> dict[str, set[str]]:
     players_achievements: dict[str, set[str]] = {}
     for p in players:
         players_achievements[p] = set()
@@ -100,32 +107,39 @@ def achievement_tracker() -> None:
         "Dylan"
     ]
     print("=== Achievement Tracker System ===\n")
-    players_achievments: dict[str, set[str]] = gen_player_achievements(players, achievements)
+    players_achievments: dict[str, set[str]] = gen_ach(players, achievements)
     player1: str = ""
     player2: str = ""
     disp_players_achievements(players_achievments)
     print("")
-    print(f"All distinct achievements: {all_unique_achievements(players_achievments)}")
+    print("All distinct achievements:", end=" ")
+    print(f"{all_unique_achievements(players_achievments)}")
     print("Total unique achievements:", end=" ")
     print(f"{len(all_unique_achievements(players_achievments))}")
     print("")
-    print(f"Common to all players: {common_to_all_players(players_achievments)}")
+    print("Common to all players:", end=" ")
+    print(f"{common_to_all_players(players_achievments)}")
     print("")
     for p in players_achievments:
-        print(f"Only {p} has: {unique_achievments_by_players(p, players_achievments)}")
+        print(f"Only {p} has:", end=" ")
+        print(f"{unique_achievments_by_players(p, players_achievments)}")
     print("")
     for p in players_achievments:
-        print(f"{p} is missing: {missing_achievements_by_player(p, players_achievments, achievements)}")
+        print(f"{p} is missing:", end=" ")
+        print(f"{missing_achievements(p, players_achievments, achievements)}")
     print("")
     print("\n=== OLD EXERCICE ===\n")
-    print(f"Rare achievements (1 player): {rare_achievements(players_achievments)}")
+    print("Rare achievements (1 player):", end=" ")
+    print(f"{rare_achievements(players_achievments)}")
     print("")
     player1 = "Alice"
     player2 = "Bob"
     print(f"{player1} vs {player2} common:", end=" ")
     print(f"{p1_inter_p2(player1, player2, players_achievments)}")
-    print(f"{player1} unique: {p1_diff_p2(player1, player2, players_achievments)}")
-    print(f"{player2} unique: {p1_diff_p2(player2, player1, players_achievments)}")
+    print(f"{player1} unique:", end=" ")
+    print(f"{p1_diff_p2(player1, player2, players_achievments)}")
+    print(f"{player2} unique:", end=" ")
+    print(f"{p1_diff_p2(player2, player1, players_achievments)}")
 
 
 if __name__ == "__main__":

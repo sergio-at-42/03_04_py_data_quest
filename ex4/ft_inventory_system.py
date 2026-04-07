@@ -72,7 +72,7 @@ def load_inventory(argv: list[str]) -> dict[str, int]:
                 print(f"Error - invalid parameter ’{name}’")
             except ValueError:
                 print(f"Quantity error for ’{name}':", end=" ")
-                print(f"invalid literal for int() with base 10:", end=" ")
+                print("invalid literal for int() with base 10:", end=" ")
                 print(f"’{argv[i].split(":")[1]}’")
     return (inventory)
 
@@ -88,8 +88,8 @@ def inventory_system(argv: list[str]) -> None:
         total_items: int = sum(inventory.values())
         print(f"Total quantity of the {len(inventory)} items: {total_items}")
         for item, quantity in inventory.items():
-                print(f"Item {item}: represents", end=" ")
-                print(f"{round((quantity/total_items)*100, 1)}%")
+            print(f"Item {item}: represents", end=" ")
+            print(f"{round((quantity/total_items)*100, 1)}%")
         max_item, max_qty = max(inventory.items(), key=lambda item: item[1])
         print(f"Item most abundant: {max_item} with quantity {max_qty}")
         min_item, min_qty = min(inventory.items(), key=lambda item: item[1])
