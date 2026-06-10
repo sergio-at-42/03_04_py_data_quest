@@ -5,6 +5,9 @@ import sys
 
 def command_quest(argv: list[str]) -> None:
     print("=== Command Quest ===")
+    print(f"Program name: {argv[0].rpartition("/")}")
+    print(f"Program name: {argv[0].rpartition("/")[0]}")
+    print(f"Program name: {argv[0].rpartition("/")[1]}")
     print(f"Program name: {argv[0].rpartition("/")[2]}")
     if argv.__len__() == 1:
         print("No arguments provided!")
